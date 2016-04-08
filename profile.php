@@ -1,5 +1,5 @@
 <?php
-
+    require_once('include/authorize.php');
 ?>
 
 <html lang="en">
