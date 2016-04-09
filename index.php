@@ -5,7 +5,7 @@
     if(@$_POST['submit']){
         $email = strtolower($_POST['email']);
         $password = sha1($_POST['password']);
-        echo $password; // JJJJJJ
+
         if(!$_POST['email'] || !$_POST['password']){
             $message .= '<p>Please enter all fields.</p>';
         } else {
@@ -13,8 +13,7 @@
             $query = "SELECT password FROM users WHERE email = :email";
             $stmt = $dbh->prepare($query);
             $stmt->execute(array('email' => $email));
-            $result = $stmt->fetch();
-            echo $result; //IKJJKHKJHK
+            $result = $stmt->fetchColumn();
 
             if($password == $result){
                 $stmt = $dbh->prepare('SELECT id FROM users WHERE email = :email AND password = :password');

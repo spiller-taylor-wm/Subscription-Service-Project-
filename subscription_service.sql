@@ -20,18 +20,24 @@ USE `subscription_service` ;
 -- -----------------------------------------------------
 -- Table `subscription_service`.`users`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `subscription_service`.`users` ;
+
 CREATE TABLE IF NOT EXISTS `subscription_service`.`users` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(100) NULL DEFAULT NULL,
   `password` VARCHAR(40) NULL DEFAULT NULL,
+  `name` VARCHAR(250) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `subscription_service`.`lists`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `subscription_service`.`lists` ;
+
 CREATE TABLE IF NOT EXISTS `subscription_service`.`lists` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL DEFAULT NULL,
@@ -50,6 +56,8 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `subscription_service`.`tasks`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `subscription_service`.`tasks` ;
+
 CREATE TABLE IF NOT EXISTS `subscription_service`.`tasks` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL DEFAULT NULL,
