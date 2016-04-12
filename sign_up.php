@@ -70,11 +70,13 @@
                         <div id="output"></div>
                         <div class="avatar"></div>
                         <div class="form-box">
-                            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                            <form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+                                <input type="hidden" name="MAX_FILE_SIZE" value="32768" />
                                 <input name="name" type="text" placeholder="full name" value="<?php echo $name; ?>">
                                 <input name="email" type="text" placeholder="email" value="<?php echo $email; ?>">
                                 <input name="password" type="password" placeholder="password">
                                 <input name="password_confirm" type="password" placeholder="confirm password">
+                                <input type="file" id="screenshot" name="screenshot" />
                                 <button class="btn btn-info btn-block login" name="adduser" value="1" type="submit">Sign Up</button>
                             </form>
                         </div>

@@ -1,6 +1,12 @@
 <?php
-if(!isset($_SESSION['users_id']) || !is_numeric($_SESSION['users_id'])){
-    // The user is not logged in so send the authentication headers
+// Username and password for authentication
+$username = 'rock';
+$password = 'roll';
+
+if(!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW']) ||
+    ($_SERVER['PHP_AUTH_USER'] != $username) || ($_SERVER['PHP_AUTH_PW'] != $password)){
+    // The username/password are incorrect so send the authentication headers
     header('HTTP/1.1 401 Unauthorized');
-    exit('<h6>There was an error. Please log in again.</h6>');
+    header('WWW-Authenticate: Basic realm= "Listy');
+    exit('');
 }
