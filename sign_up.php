@@ -1,5 +1,6 @@
 <?php
     require_once('include/connect.php');
+    require_once('include/appvars.php');
     $message = '';
 ?>
 
@@ -23,42 +24,62 @@
         <?php
             if (@$_POST['adduser']) {
                 $output_form = false;
-                $name = $_POST['name'];
-                $email = strtolower($_POST['email']);
+                $name = trim($_POST['name']);
+                $email = trim(strtolower($_POST['email']));
                 $password = $_POST['password'];
                 $password_confirm = $_POST['password_confirm'];
+                $screenshot = trim($_FILES['screenshot']['name']);
+                $screenshot_type = $_FILES['screenshot']['type'];
+                $screenshot_size = $_FILES['screenshot']['size'];
 
                 // Validates the Form:
-                if (empty($name) || empty($email) || empty($password) || empty($password_confirm) || ($password !== $password_confirm)){
-                    $message .= '<p>Please fill out all fields.</p>';
-                    $output_form = true;
-                } else {
-                    // ENCRYPT PASSWORD
-                    $password = sha1($password);
+                if (!empty($name) && !empty($email) && !empty($password) && !empty($password_confirm) && !empty($screenshot) && ($password == $password_confirm)) {
+                    if ((($screenshot_type == 'image/gif') || ($screenshot_type == 'image/jpeg') || ($screenshot_type == 'image/pjpeg') || ($screenshot_type == 'image/png'))
+                        && ($screenshot_size > 0) && ($screenshot_size <= GW_MAXFILESIZE)) {
 
-                    // ENTER USER INFO
-                    $query = "INSERT INTO users (email, password, name) VALUES (:email, :password, :name)";
-                    $stmt = $dbh->prepare($query);
-                    $result = $stmt->execute(
-                        array(
-                            'email'     => $email,
-                            'password'  => $password,
-                            'name'      => $name
-                        )
-                    );
+                        if ($_FILES['screenshot']['error'] == 0) {
+                            // Move file to the target upload folder
+                            $target = GW_UPLOADPATH . $screenshot;
 
-                    if ($result) {
-                        $message = "User " . $_POST['email'] . " was successfully saved.";
+                            if (move_uploaded_file($_FILES['screenshot']['tmp_name'], $target)) {
+                                // ENTER USER INFO
+                                $query = "INSERT INTO users (email, password, name, screenshot) VALUES (:email, sha1(:password), :name, :screenshot)";
+                                $stmt = $dbh->prepare($query);
+                                $result = $stmt->execute(
+                                    array(
+                                        'email'         =>  $email,
+                                        'password'      =>  $password,
+                                        'name'          =>  $name,
+                                        'screenshot'    =>  $screenshot
+                                    )
+                                );
+
+                                if ($result) {
+                                    $message = "User " . $_POST['email'] . " was successfully saved.";
+                                } else {
+                                    $message = "There was an error saving " . $_POST['email'];
+                                    $output_form = true;
+                                }
+
+                                // SHOW SUCCESS MESSAGE TO USER
+                                echo '<h1>Welcome ' . $name . '!</h1><br />';
+                                echo '<a href="profile.php">Go to your account.</a>';
+                                echo $message;
+                            } else {
+                                $message = '<p>Sorry, there was a problem uploading your screen shot image.</p>';
+                                $output_form = true;
+                            }
+                        }
                     } else {
-                        $message = "There was an error saving " . $_POST['email'];
+                        $message = '<p>The screen shot must be a GIF, JPEG, or PNG image file no greater than ' . (GW_MAXFILESIZE / 1024) .' KB in size.</p>';
+                        $output_form = true;
                     }
-
-                    // SHOW SUCCESS MESSAGE TO USER
-                    echo '<h1>Welcome ' . $name . '!</h1><br />';
-                    echo '<a href="profile.php">Go to your account.</a>';
-                    echo $message;
+                    // Try to delete the temp screenshot file
+                    @unlink($_FILES['screenshot']['tmp_name']);
+                } else {
+                    $output_form = true;
+                    $message = '<p>Please fill in all fields</p>';
                 }
-
             } else {    // Button was not pressed or page has not loaded
                 $output_form = true;
             }
@@ -71,7 +92,7 @@
                         <div class="avatar"></div>
                         <div class="form-box">
                             <form enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-                                <input type="hidden" name="MAX_FILE_SIZE" value="32768" />
+                                <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo GW_MAXFILESIZE; ?>" />
                                 <input name="name" type="text" placeholder="full name" value="<?php echo $name; ?>">
                                 <input name="email" type="text" placeholder="email" value="<?php echo $email; ?>">
                                 <input name="password" type="password" placeholder="password">
