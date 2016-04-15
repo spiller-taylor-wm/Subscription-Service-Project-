@@ -14,8 +14,8 @@ require_once('include/appvars.php');
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-<script src="js/navbar.js" type="text/javascript" rel="script"></script>
 <div align="center" id="content">
+    <a href="log_out.php">log out</a>
     <h1>Send an email to all users:</h1>
     <?php
     if (isset($_POST['submit'])) {

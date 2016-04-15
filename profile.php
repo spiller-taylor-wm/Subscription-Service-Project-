@@ -1,5 +1,5 @@
 <?php
-    require_once('include/authorize.php');
+    // require_once('include/authorize.php');
     require_once('include/connect.php');
     require_once('include/appvars.php');
 ?>
@@ -14,10 +14,10 @@
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" />
     </head>
     <body>
-        <script src="js/navbar.js" type="text/javascript" rel="script"></script>
-        <div align="center" id="content">
-            <h1>Send an email to all users:</h1>
 
+        <div align="center" id="content">
+            <h1>Welcome, <?php echo $_COOKIE['name']; ?> </h1>
+            <a href="log_out.php">log out</a>
 
         </div>
     </body>

@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 
         <!-- Links for the navigation bar -->
-        <script type="text/javascript" rel="script" src="js/nav.js"></script>
+        <script type="text/javascript" rel="script" src="js/form.js"></script>
         <link rel="stylesheet" type="text/css" href="css/form.css" />
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
     </head>
