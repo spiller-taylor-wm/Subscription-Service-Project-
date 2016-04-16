@@ -3,6 +3,13 @@
     require_once('include/appvars.php');
     require_once('include/authorize.php');
     $message = '';
+
+    if(!isset($_COOKIE['user_id']) || !isset($_COOKIE['name'])){
+        // Redirect to the home page
+        $home_url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . ' ';
+        header('Location: ' . $home_url);
+        exit();
+    }
 ?>
 
 <html lang="en">

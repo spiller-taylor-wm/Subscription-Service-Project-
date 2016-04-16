@@ -2,6 +2,13 @@
     require_once('include/connect.php');
     require_once('include/appvars.php');
     $message = '';
+
+    if(!isset($_COOKIE['user_id']) || !isset($_COOKIE['name'])){
+        // Redirect to the home page
+        $home_url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . ' ';
+        header('Location: ' . $home_url);
+        exit();
+    }
 ?>
 
 <html lang="en">
@@ -19,7 +26,6 @@
     <body>
         <div align="center">
             <h1>Listy</h1>
-            <a href="profile.php">profile</a>
         </div>
         <?php
             if (@$_POST['adduser']) {
@@ -100,6 +106,7 @@
                                 <input type="file" id="screenshot" name="screenshot" />
                                 <button class="btn btn-info btn-block login" name="adduser" value="1" type="submit">Sign Up</button>
                             </form>
+                            <a href="index.php">Sign In</a>
                         </div>
                     </div>
                 </div>

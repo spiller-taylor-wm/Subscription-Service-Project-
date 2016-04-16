@@ -68,13 +68,12 @@
     <body>
         <div align="center">
             <h1>Listy</h1>
-            <a href="admin.php">admin</a>
-        </div>
             <?php
                 // If there is no cookie, show the form to log in
                 if (empty($_COOKIE['user_id'])){
-                    echo $message;
+                echo $message;
             ?>
+        </div>
         <div class="container">
             <div class="login-container">
                 <div id="output"></div>
